@@ -1,0 +1,46 @@
+# Example configuration for PCMA on Office-Home (Art -> Clipart).
+# This file is for reference only; the entry scripts read CLI flags.
+data:
+  root: /path/to/office_home          # contains art/ clipart/ product/ real_world/
+  source: art
+  target: clipart
+
+model:
+  architecture: ViT-B/16
+  n_ctx: 16
+
+source_training:
+  epochs: 10
+  batch_size: 64
+  lr: 1.0e-3
+  ca_lr: 1.0e-4
+  warmup_epochs: 1
+  warmup_lr: 1.0e-5
+  prototype_momentum: 0.9
+  ca_init_gate_bias: -2.0
+  anchor_weight: 0.0
+
+target_adaptation:
+  epochs: 40
+  batch_size: 64
+  lr_text: 1.0e-2
+  lr_vision: 5.0e-3
+  ca_lr: 1.0e-4
+  scale_factor: 4.0
+  cdc_weight: 0.5
+
+label_propagation:
+  knn: 10
+  alpha: 0.99
+  cut_dim: 512
+  proto_topk: 50
+  proto_momentum: 0.9
+
+multi_prototype:
+  enabled: true
+  k_max: 3
+  threshold: 0.5
+
+fusion:
+  dynamic: false
+  temperature: 1.0
